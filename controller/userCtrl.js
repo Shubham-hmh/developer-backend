@@ -260,7 +260,7 @@ const forgotPasswordToken = asyncHandler(async (req, res) => {
     try {
         const token = await user.createPasswordResetToken();
         await user.save();
-        const resetURL = `Hi ,please follow this link to change password This link is valid till 10 minutes from now.<a href ="http://localhost:5000/api/user/reset-password/${token}>Click here </a>`
+        const resetURL = `Hi ,please follow this link to change password This link is valid till 10 minutes from now.<a href ="http://localhost:3000/reset-password/${token}>Click here </a>`
         const data = {
             to: email,
             text: "Hey user @",
@@ -522,13 +522,26 @@ const createOrder=asyncHandler(async(req,res)=>{
 
 // });
 
+const getMyOrders =asyncHandler(async(req,res)=>{
+    const {_id} =req.user;
 
+    try {
+        const orders =await Order.find({user:_id}).populate("user").populate("orderItems.product").populate("orderItems.color");
+        res.json({
+            orders
+        })
+        
+    } catch (error) {
+        throw new Error(error)
+        
+    }
+})
 
 module.exports = {
     createUser, loginUserCtrl, getallUser, deleteUser, loginAdmin, saveAddress,
     removeProductFromCart,updateProductQuantityFromCart ,
     getUser, updateUser, blockUser, unblockUser, handleRefreshToken, 
     getWishlist, userCart, 
-    logout, updatePassword, forgotPasswordToken, resetPassword, getCart, createOrder
+    logout, updatePassword, forgotPasswordToken, resetPassword, getCart, createOrder ,getMyOrders
     // emptyCart, applyCoupon, createOrder, updateOrderStatus,getOrders,
 }

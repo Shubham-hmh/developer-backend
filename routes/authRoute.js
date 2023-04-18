@@ -1,5 +1,5 @@
 const express = require("express");
-const { createUser, loginUserCtrl, getallUser, getUser, deleteUser, updateUser, blockUser, unblockUser, handleRefreshToken, logout, updatePassword, forgotPasswordToken, resetPassword, loginAdmin, getWishlist, saveAddress, userCart, getCart, emptyCart, applyCoupon, createOrder, getOrders, updateOrderStatus, removeProductFromCart, updateProductQuantityFromCart } = require("../controller/userCtrl");
+const { createUser, loginUserCtrl, getallUser, getUser, deleteUser, updateUser, blockUser, unblockUser, handleRefreshToken, logout, updatePassword, forgotPasswordToken, resetPassword, loginAdmin, getWishlist, saveAddress, userCart, getCart, emptyCart, applyCoupon, createOrder, getOrders, updateOrderStatus, removeProductFromCart, updateProductQuantityFromCart, getMyOrders } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
 const { updateOne } = require("../models/userModel");
 const { checkout, paymentVerification } = require("../controller/paymentCtrl");
@@ -22,7 +22,7 @@ router.post("/order/paymentVerification",authMiddleware,paymentVerification);
 
 
 router.get("/all-user",getallUser);
-// router.get("/get-orders",authMiddleware, getOrders);
+router.get("/getmyorders",authMiddleware, getMyOrders);
 router.get("/refresh",handleRefreshToken);
 router.get("/logout",logout);
 router.put("/password",authMiddleware, updatePassword);
